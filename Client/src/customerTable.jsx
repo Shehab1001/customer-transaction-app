@@ -20,7 +20,7 @@ const CustomerTable = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch('/data.json');
+        const response = await fetch('https://github.com/Shehab1001/customer-transaction-app/blob/main/data/data.json');
         const data = await response.json();
 
         setCustomers(data.customers);
