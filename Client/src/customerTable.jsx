@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+
 import {
   LineChart,
   Line,
@@ -10,6 +11,7 @@ import {
   Legend,
   ResponsiveContainer
 } from 'recharts';
+import baseUrl from '../../baseUrl';
 
 const CustomerTable = () => {
   const [customers, setCustomers] = useState([]);
@@ -21,7 +23,7 @@ const CustomerTable = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const result = await axios.get('http://localhost:3001/api/data');
+        const result = await axios.get(`${baseUrl}/api/data`);
         setCustomers(result.data.customers);
         setTransactions(result.data.transactions);
       } catch (error) {
