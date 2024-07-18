@@ -1,4 +1,4 @@
-import CustomerTable from './customerTable';
+import CustomerTable from './components/customerTable';
 
 
 function App() {
