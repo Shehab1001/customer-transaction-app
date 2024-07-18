@@ -27,7 +27,8 @@ const data = {
 
 app.use(cors());
 
-app.get('/api/data', (req, res) => {
+
+app.use('/api/data', (req, res) => {
   res.json(data);
 });
 

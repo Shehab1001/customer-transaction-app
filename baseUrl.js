@@ -1,0 +1,1 @@
+const baseUrl = "https://customer-transaction-app.azurewebsites.net/";
