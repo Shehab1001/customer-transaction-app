@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-
 import {
   LineChart,
   Line,
@@ -11,7 +10,6 @@ import {
   Legend,
   ResponsiveContainer
 } from 'recharts';
-import baseUrl from '../../baseUrl';
 
 const CustomerTable = () => {
   const [customers, setCustomers] = useState([]);
@@ -19,32 +17,30 @@ const CustomerTable = () => {
   const [selectedCustomer, setSelectedCustomer] = useState(null);
   const [filterName, setFilterName] = useState('');
 
-  // Fetch data from the API
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const result = await axios.get(`${baseUrl}/api/data`);
-        setCustomers(result.data.customers);
-        setTransactions(result.data.transactions);
+        const response = await fetch('/data.json');
+        const data = await response.json();
+
+        setCustomers(data.customers);
+        setTransactions(data.transactions);
       } catch (error) {
         console.error("Error fetching data:", error);
       }
     };
-
     fetchData();
   }, []);
 
-  // Handle customer row click
+
   const handleCustomerClick = (customerId) => {
     setSelectedCustomer(customerId);
   };
 
-  // Filter customers by name
   const filteredCustomers = customers.filter((customer) =>
     customer.name.toLowerCase().includes(filterName.toLowerCase())
   );
 
-  // Calculate total transaction amount for each customer
   const customerTransactionAmounts = filteredCustomers.map((customer) => {
     const totalAmount = transactions
       .filter((transaction) => transaction.customer_id === customer.id)
@@ -52,7 +48,6 @@ const CustomerTable = () => {
     return { ...customer, totalAmount };
   });
 
-  // Aggregate transaction data by date for the selected customer
   const transactionData = transactions
     .filter((transaction) => transaction.customer_id === selectedCustomer)
     .reduce((acc, transaction) => {
@@ -62,13 +57,11 @@ const CustomerTable = () => {
       return acc;
     }, {});
 
-  // Prepare data for the chart
   const chartData = Object.keys(transactionData).map((date) => ({
     date,
     amount: transactionData[date]
   }));
 
-  // Function to highlight the search keyword in the customer name
   const highlightText = (text, highlight) => {
     if (!highlight) return text;
     const parts = text.split(new RegExp(`(${highlight})`, 'gi'));
